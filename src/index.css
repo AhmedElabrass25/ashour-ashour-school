@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-spin-fast: spin-fast 0.7s linear infinite;
+  --animate-toast-in: toast-in 0.25s ease-out;
+}
+
+@keyframes spin-fast {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:root {
+  font-family: "Cairo", "Tahoma", "Segoe UI", sans-serif;
+  color: #17324d;
+  background: #f4f8fb;
+  font-size: 16px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --background: #f4f8fb;
+  --foreground: #17324d;
+  --card: #ffffff;
+  --card-foreground: #17324d;
+  --muted: #eef4f8;
+  --muted-foreground: #60788c;
+  --border: #dce7ee;
+  --input: #d5e2ea;
+  --ring: #236a8f;
+  --primary: #236a8f;
+  --primary-foreground: #ffffff;
+  --radius: 0.625rem;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  background: var(--background);
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ring) 32%, transparent);
+  outline-offset: 2px;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+::selection {
+  background: #b9d8e7;
+  color: #17324d;
+}
