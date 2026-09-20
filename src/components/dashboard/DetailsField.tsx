@@ -40,14 +40,18 @@ export function DetailsSelect({
   options,
   onChange,
 }: DetailsSelectProps) {
+  const mergedOptions =
+    value && !options.includes(value) ? [value, ...options] : options;
+
   return (
     <label className="text-slate-800 text-sm font-bold flex flex-col gap-1.5 w-full">
       {label}
       <DropdownField
         value={value}
-        options={options.map((option) => ({ label: option, value: option }))}
+        options={mergedOptions.map((option) => ({ label: option, value: option }))}
         onValueChange={onChange}
         ariaLabel={label}
+        placeholder="اختر اسم المدرسة"
       />
     </label>
   );

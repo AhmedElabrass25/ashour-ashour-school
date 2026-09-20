@@ -50,11 +50,18 @@ export function useSchoolData(authenticated: boolean) {
     key: "students" | "classes",
     value: string,
   ) =>
-    setRows((current) =>
-      current.map((row, rowIndex) =>
-        rowIndex === index ? { ...row, [key]: value } : row,
-      ),
-    );
+    setRows((current) => {
+      const targetLevel = current[index]?.level;
+      return current.map((row, rowIndex) => {
+        if (key === "classes" && targetLevel && row.level === targetLevel) {
+          return { ...row, classes: value };
+        }
+        if (rowIndex === index) {
+          return { ...row, [key]: value };
+        }
+        return row;
+      });
+    });
 
   const submitForm = async (
     values: SchoolFormValues,
@@ -122,10 +129,14 @@ export function useSchoolData(authenticated: boolean) {
       (sum, row) => sum + Number(row.students || 0),
       0,
     );
-    const classTotal = rows.reduce(
-      (sum, row) => sum + Number(row.classes || 0),
-      0,
-    );
+    const seenLevels = new Set<string>();
+    const classTotal = schoolRows.reduce((sum, row) => {
+      if (!seenLevels.has(row.level)) {
+        seenLevels.add(row.level);
+        return sum + Number(row.classes || 0);
+      }
+      return sum;
+    }, 0);
 
     setSubmissions((current) => [
       {

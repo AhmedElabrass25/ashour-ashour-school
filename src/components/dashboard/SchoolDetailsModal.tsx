@@ -4,6 +4,7 @@ import { DetailsField, DetailsSelect } from "./DetailsField";
 import { StudentRowsEditor } from "./StudentRowsEditor";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { ArrowRight, Trash2 } from "lucide-react";
+import { SCHOOL_NAMES } from "../../data/schoolData";
 
 type SchoolDetailsModalProps = {
   item: Submission;
@@ -95,9 +96,10 @@ export function SchoolDetailsModal({
               بيانات المدرسة الأساسية
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 bg-slate-50 border border-slate-200 p-5 rounded-sm">
-              <DetailsField
+              <DetailsSelect
                 label="اسم المدرسة"
                 value={draft.schoolName}
+                options={SCHOOL_NAMES}
                 onChange={(value) => set({ schoolName: value })}
               />
               <DetailsField

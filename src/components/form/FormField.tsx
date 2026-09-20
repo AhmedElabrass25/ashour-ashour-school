@@ -16,6 +16,8 @@ type DropdownFieldInputProps = {
   label: string;
   name: string;
   options: string[];
+  required?: boolean;
+  placeholder?: string;
 };
 
 export function Field({
@@ -58,6 +60,8 @@ export function DropdownFieldInput({
   label,
   name,
   options,
+  required,
+  placeholder,
 }: DropdownFieldInputProps) {
   const {
     control,
@@ -68,15 +72,24 @@ export function DropdownFieldInput({
     name: name as keyof SchoolFormValues,
   });
   const error = errors[name as keyof SchoolFormValues]?.message;
+  
+  const mergedOptions =
+    field.value && !options.includes(String(field.value))
+      ? [String(field.value), ...options]
+      : options;
+
   return (
     <label className="flex flex-col gap-1.5 w-full">
-      <span className="text-sm font-bold text-slate-700">{label}</span>
+      <span className="text-sm font-bold text-slate-700">
+        {label} {required && <span className="text-red-500">*</span>}
+      </span>
       <div className={error ? "ring-2 ring-red-300 rounded-lg" : ""}>
         <DropdownField
           value={String(field.value || "")}
-          options={options.map((option) => ({ label: option, value: option }))}
+          options={mergedOptions.map((option) => ({ label: option, value: option }))}
           onValueChange={field.onChange}
           ariaLabel={label}
+          placeholder={placeholder || "اختر قيمة"}
         />
       </div>
       {error && (
@@ -87,3 +100,4 @@ export function DropdownFieldInput({
     </label>
   );
 }
+

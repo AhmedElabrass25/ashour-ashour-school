@@ -10,6 +10,11 @@ async function apiError(response: Response, fallback: string) {
         "جدول school_submissions غير موجود. شغّل ملف supabase-schema.sql في Supabase SQL Editor ثم أعد المحاولة.",
       );
     }
+    if (body.message?.includes("Could not find the") || body.message?.includes("column")) {
+      return new Error(
+        "جدول قاعدة البيانات في Supabase يحتاج لتحديث الحقول. يرجى تنفيذ ملف supabase-migration-safety.sql في Supabase SQL Editor وإعادة المحاولة.",
+      );
+    }
     return new Error(`Supabase: ${body.message || raw || fallback}`);
   } catch {
     return new Error(`Supabase: ${raw || fallback}`);

@@ -1,13 +1,15 @@
 import { DropdownFieldInput, Field } from "./FormField";
+import { SCHOOL_NAMES } from "../../data/schoolData";
 
 export function SchoolInfoFields() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
-      <Field
+      <DropdownFieldInput
         label="اسم المدرسة"
         name="schoolName"
+        options={SCHOOL_NAMES}
         required
-        placeholder="اكتب اسم المدرسة بالكامل"
+        placeholder="اختر اسم المدرسة"
       />
       <Field
         label="الكود التعريفي للمدرسة"

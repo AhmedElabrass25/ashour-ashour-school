@@ -147,25 +147,58 @@ export function SchoolDetailsPage({
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-4 md:p-5">
-            {(item.studentRows || []).map((row) => (
-              <div
-                className="flex flex-col gap-1.5 border border-slate-200 bg-slate-50 rounded-sm p-3.5 hover:bg-slate-100 transition-colors"
-                key={`${row.level}-${row.gender}`}
-              >
-                <div className="flex justify-between items-center mb-1 border-b border-slate-200 pb-1.5">
-                   <strong className="text-xs font-bold text-slate-800">{row.level}</strong>
-                   <span className="text-[10px] font-bold bg-white border border-slate-200 px-1.5 py-0.5 rounded-sm text-slate-600">{row.gender}</span>
+            {(item.studentRows || [])
+              .reduce<
+                Array<{
+                  level: string;
+                  classes: string;
+                  genders: Array<{ gender: string; students: string }>;
+                }>
+              >((acc, row) => {
+                let existing = acc.find((g) => g.level === row.level);
+                if (!existing) {
+                  existing = {
+                    level: row.level,
+                    classes: row.classes || "0",
+                    genders: [],
+                  };
+                  acc.push(existing);
+                }
+                existing.genders.push({
+                  gender: row.gender,
+                  students: row.students || "0",
+                });
+                if (row.classes && existing.classes === "0") {
+                  existing.classes = row.classes;
+                }
+                return acc;
+              }, [])
+              .map((group) => (
+                <div
+                  className="flex flex-col gap-2 border border-slate-200 bg-slate-50 rounded-sm p-3.5 hover:bg-slate-100 transition-colors"
+                  key={group.level}
+                >
+                  <div className="flex justify-between items-center mb-1 border-b border-slate-200 pb-1.5">
+                    <strong className="text-xs font-bold text-slate-800">
+                      {group.level}
+                    </strong>
+                    <span className="text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-sm">
+                      {group.classes} فصول مشتركة
+                    </span>
+                  </div>
+                  {group.genders.map((g) => (
+                    <div
+                      key={g.gender}
+                      className="flex justify-between items-center px-0.5 text-xs"
+                    >
+                      <span className="font-semibold text-slate-600">
+                        الطلاب ({g.gender}):
+                      </span>
+                      <b className="text-blue-700 font-bold">{g.students} طالب</b>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex justify-between items-center px-0.5">
-                   <span className="text-xs font-semibold text-slate-500">الطلاب:</span>
-                   <b className="text-blue-700 font-bold text-xs">{row.students} طالب</b>
-                </div>
-                <div className="flex justify-between items-center px-0.5">
-                   <span className="text-xs font-semibold text-slate-500">الفصول:</span>
-                   <b className="text-slate-700 font-bold text-xs">{row.classes} فصول</b>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </section>
 

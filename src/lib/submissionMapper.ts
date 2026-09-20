@@ -11,10 +11,15 @@ export function toSubmission(record: Record<string, unknown>): Submission {
     (sum, row) => sum + Number((row as { students?: string }).students || 0),
     0,
   );
-  const classes = rows.reduce(
-    (sum, row) => sum + Number((row as { classes?: string }).classes || 0),
-    0,
-  );
+  const seenLevels = new Set<string>();
+  const classes = rows.reduce((sum, row) => {
+    const level = String((row as { level?: string }).level || "");
+    if (!seenLevels.has(level)) {
+      seenLevels.add(level);
+      return sum + Number((row as { classes?: string }).classes || 0);
+    }
+    return sum;
+  }, 0);
   return {
     id: Number(record.id),
     schoolName: String(record.school_name || ""),
