@@ -66,9 +66,6 @@ export function StudentFields({ rows, updateRow }: StudentFieldsProps) {
               <span className="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block shadow-2xs"></span>
               {group.level}
             </span>
-            <span className="text-xs font-bold text-slate-500 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
-              فصول مشتركة (بنين + بنات)
-            </span>
           </div>
 
           {/* Group Content Layout */}
@@ -120,12 +117,6 @@ export function StudentFields({ rows, updateRow }: StudentFieldsProps) {
 
             {/* Shared Classes Input (Vertically Centered across both gender rows) */}
             <div className="md:col-span-4 flex flex-col items-center justify-center p-4 bg-blue-50/40 md:bg-transparent border border-blue-200 md:border-none rounded-lg text-center">
-              <label className="text-xs md:text-sm font-extrabold text-slate-800 mb-1.5 flex items-center gap-1.5">
-                <span>عدد الفصول</span>
-                <span className="text-blue-600 font-bold text-xs bg-blue-100 px-1.5 py-0.5 rounded">
-                  (مشترك للصف)
-                </span>
-              </label>
               <input
                 className="w-full max-w-[160px] h-11 rounded-lg border border-blue-300 md:border-slate-300 bg-white px-3 text-center text-slate-900 font-extrabold text-base placeholder-slate-400 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all shadow-xs"
                 type="number"
@@ -137,9 +128,6 @@ export function StudentFields({ rows, updateRow }: StudentFieldsProps) {
                   updateRow(group.firstIndex, "classes", e.target.value)
                 }
               />
-              <span className="text-[11px] font-semibold text-slate-500 mt-1">
-                قيمة الفصول ممتدة بين البنين والبنات
-              </span>
             </div>
           </div>
         </div>
