@@ -39,7 +39,11 @@ export function LeadershipPage({ submissions }: LeadershipPageProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const totalStudents = submissions.reduce((sum, item) => sum + item.students, 0);
-  const totalClasses = submissions.reduce((sum, item) => sum + item.classes, 0);
+  const totalClasses = submissions.reduce((sum, item) => {
+    const cls = item.classes || 0;
+    // Fallback protection: if a school has > 100 classes (invalid entry in DB), estimate based on students
+    return sum + (cls > 100 ? Math.max(1, Math.round((item.students || 0) / 35)) : cls);
+  }, 0);
   const reviewedSchools = submissions.filter((item) => item.status === "مكتمل").length;
 
   const closeMenu = () => setMenuOpen(false);

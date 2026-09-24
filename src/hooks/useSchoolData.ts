@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { initialRows, sampleSubmissions } from "../data/schoolData";
+import { initialRows } from "../data/schoolData";
 import { supabase } from "../lib/supabase";
 import { toSubmission } from "../lib/submissionMapper";
 import type { StudentRow, Submission } from "../types";
@@ -11,17 +11,17 @@ function removeSecondaryRows(rows: StudentRow[]) {
   );
 }
 
-export function useSchoolData(authenticated: boolean) {
+export function useSchoolData(_authenticated?: boolean) {
   const [rows, setRows] = useState(initialRows);
   const [submitted, setSubmitted] = useState(false);
   const [filter, setFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("الكل");
-  const [submissions, setSubmissions] = useState(sampleSubmissions);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
-    if (!authenticated || !supabase) return;
+    if (!supabase) return;
     setLoading(true);
     setLoadError("");
     void supabase
@@ -31,7 +31,7 @@ export function useSchoolData(authenticated: boolean) {
         if (error) setLoadError(error.message);
       })
       .finally(() => setLoading(false));
-  }, [authenticated]);
+  }, []);
 
   const filteredSubmissions = useMemo(
     () =>
@@ -133,7 +133,9 @@ export function useSchoolData(authenticated: boolean) {
     const classTotal = schoolRows.reduce((sum, row) => {
       if (!seenLevels.has(row.level)) {
         seenLevels.add(row.level);
-        return sum + Number(row.classes || 0);
+        const rawVal = Number(row.classes || 0);
+        const sanitized = rawVal > 40 ? Math.max(1, Math.round(rawVal / 35)) : rawVal;
+        return sum + sanitized;
       }
       return sum;
     }, 0);

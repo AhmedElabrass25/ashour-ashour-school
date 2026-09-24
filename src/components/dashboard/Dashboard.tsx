@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { DownloadCloud, Loader2, SearchX, ServerCrash } from "lucide-react";
+import { useState, useEffect } from "react";
+import { DownloadCloud, Loader2, SearchX, ServerCrash, ChevronRight, ChevronLeft } from "lucide-react";
 import type { Submission } from "../../types";
 import { DashboardStats } from "./DashboardStats";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { SubmissionsTable } from "./SubmissionsTable";
 import { SchoolDetailsModal } from "./SchoolDetailsModal";
 import { exportSchoolsToExcel } from "../../lib/exportSchools";
+
+const PAGE_SIZE = 6;
 
 type DashboardProps = {
   submissions: Submission[];
@@ -31,6 +33,18 @@ export function Dashboard({
   loadError,
 }: DashboardProps) {
   const [selectedSchool, setSelectedSchool] = useState<Submission | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset to page 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, typeFilter, submissions.length]);
+
+  const totalPages = Math.max(1, Math.ceil(submissions.length / PAGE_SIZE));
+  const pagedSubmissions = submissions.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
 
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col gap-6 pb-12">
@@ -93,6 +107,11 @@ export function Dashboard({
               اضغط على أي مدرسة لمراجعة وتعديل بياناتها فورًا
             </p>
           </div>
+          {submissions.length > 0 && (
+            <span className="text-sm font-semibold text-slate-500">
+              {submissions.length} مدرسة · صفحة {currentPage} من {totalPages}
+            </span>
+          )}
         </div>
         
         <DashboardToolbar
@@ -102,7 +121,50 @@ export function Dashboard({
           setTypeFilter={setTypeFilter}
         />
         
-        <SubmissionsTable submissions={submissions} onOpen={(item) => setSelectedSchool(item)} />
+        <SubmissionsTable submissions={pagedSubmissions} onOpen={(item) => setSelectedSchool(item)} />
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 pt-2 flex-wrap">
+            <button
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-2 rounded-sm border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-2xs"
+              onClick={() => setCurrentPage((p) => p - 1)}
+              disabled={currentPage === 1}
+              aria-label="الصفحة السابقة"
+            >
+              <ChevronRight size={16} />
+              <span className="hidden sm:inline">السابق</span>
+            </button>
+
+            <div className="flex items-center gap-1 flex-wrap justify-center">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-8 h-8 sm:w-9 sm:h-9 rounded-sm text-xs sm:text-sm font-bold transition-colors shadow-2xs ${
+                    page === currentPage
+                      ? "bg-blue-600 text-white border border-blue-600"
+                      : "bg-white border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700"
+                  }`}
+                  aria-label={`صفحة ${page}`}
+                  aria-current={page === currentPage ? "page" : undefined}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+
+            <button
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-2 rounded-sm border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-2xs"
+              onClick={() => setCurrentPage((p) => p + 1)}
+              disabled={currentPage === totalPages}
+              aria-label="الصفحة التالية"
+            >
+              <span className="hidden sm:inline">التالي</span>
+              <ChevronLeft size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Edit Modal Direct Open */}

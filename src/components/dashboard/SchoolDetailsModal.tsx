@@ -42,48 +42,58 @@ export function SchoolDetailsModal({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="w-full max-w-none sm:max-w-none p-0 bg-white" dir="rtl">
         {/* Sticky header bar */}
-        <div className="sticky top-0 z-10 flex items-center justify-between gap-4 px-5 sm:px-8 py-4 bg-white border-b border-slate-200 shrink-0 shadow-2xs">
-          <div className="flex items-center gap-4 min-w-0">
-            <button
-              type="button"
-              onClick={onClose}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-slate-300 bg-slate-100 text-slate-800 text-sm font-bold hover:bg-slate-200 transition-colors shadow-2xs shrink-0"
-            >
-              <ArrowRight size={16} />
-              رجوع
-            </button>
-            <div className="min-w-0">
-              <span className="text-blue-700 font-bold text-xs uppercase tracking-wider block">
-                تعديل تفاصيل المدرسة
-              </span>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 m-0 leading-tight truncate">
-                {draft.schoolName}
-              </h2>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 shrink-0">
-            {onDelete && (
+        <div className="sticky top-0 z-10 bg-white border-b border-slate-200 shrink-0 shadow-2xs">
+          {/* Main row */}
+          <div className="flex items-center justify-between gap-2 px-4 sm:px-8 py-3 sm:py-4">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
               <button
                 type="button"
-                className="px-4 py-2.5 h-10 rounded-sm bg-red-50 text-red-600 border border-red-200 text-xs sm:text-sm font-bold hover:bg-red-100 transition-colors inline-flex items-center gap-1.5"
-                onClick={remove}
+                onClick={onClose}
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-sm border border-slate-300 bg-slate-100 text-slate-800 text-sm font-bold hover:bg-slate-200 transition-colors shadow-2xs shrink-0"
               >
-                <Trash2 size={16} />
-                <span>حذف</span>
+                <ArrowRight size={15} />
+                <span className="hidden xs:inline">رجوع</span>
               </button>
-            )}
-            <button
-              className="px-4 py-2.5 h-10 rounded-sm border border-slate-300 bg-white text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-colors hidden sm:inline-flex"
-              onClick={onClose}
-            >
-              إلغاء
-            </button>
-            <button
-              className="px-5 py-2.5 h-10 rounded-sm bg-blue-600 text-white font-bold text-xs sm:text-sm hover:bg-blue-700 transition-colors shadow-2xs"
-              onClick={save}
-            >
-              حفظ التعديلات
-            </button>
+              <div className="min-w-0 hidden sm:block">
+                <span className="text-blue-700 font-bold text-xs uppercase tracking-wider block">
+                  تعديل
+                </span>
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 m-0 leading-tight truncate">
+                  {draft.schoolName}
+                </h2>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              {onDelete && (
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 h-9 sm:h-10 rounded-sm bg-red-50 text-red-600 border border-red-200 text-xs sm:text-sm font-bold hover:bg-red-100 transition-colors"
+                  onClick={remove}
+                >
+                  <Trash2 size={15} />
+                  <span className="hidden sm:inline">حذف</span>
+                </button>
+              )}
+              <button
+                className="hidden sm:inline-flex px-4 py-2 h-10 rounded-sm border border-slate-300 bg-white text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors"
+                onClick={onClose}
+              >
+                إلغاء
+              </button>
+              <button
+                className="inline-flex items-center justify-center px-4 sm:px-5 py-2 h-9 sm:h-10 rounded-sm bg-blue-600 text-white font-bold text-xs sm:text-sm hover:bg-blue-700 transition-colors shadow-2xs whitespace-nowrap"
+                onClick={save}
+              >
+                حفظ التعديلات
+              </button>
+            </div>
+          </div>
+
+          {/* School name sub-row — mobile only */}
+          <div className="sm:hidden px-4 pb-2.5 flex items-center gap-1.5">
+            <span className="text-blue-700 font-bold text-[10px] uppercase tracking-wider shrink-0">تعديل:</span>
+            <span className="text-slate-800 font-bold text-sm truncate">{draft.schoolName}</span>
           </div>
         </div>
 
@@ -189,12 +199,6 @@ export function SchoolDetailsModal({
                 options={["أصلي", "مكلف"]}
                 onChange={(value) => set({ principalType: value })}
               />
-              <DetailsSelect
-                label="الحالة"
-                value={draft.status}
-                options={["مراجعة", "مكتمل"]}
-                onChange={(value) => set({ status: value })}
-              />
             </div>
 
             {/* Deputy info */}
@@ -236,10 +240,24 @@ export function SchoolDetailsModal({
               <span className="w-1.5 h-6 rounded-full bg-purple-600 inline-block"></span>
               الطلاب والفصول
             </h3>
-            <div className="bg-slate-50 border border-slate-200 p-5 rounded-sm">
+            <div className="bg-slate-50 border border-slate-200 p-5 rounded-sm mb-8">
               <StudentRowsEditor
                 rows={draft.studentRows || []}
                 onChange={(studentRows) => set({ studentRows })}
+              />
+            </div>
+
+            {/* Review Status */}
+            <h3 className="text-slate-900 text-base sm:text-lg font-bold mb-4 flex items-center gap-2.5 border-t border-slate-200 pt-6">
+              <span className="w-1.5 h-6 rounded-full bg-indigo-600 inline-block"></span>
+              حالة مراجعة البيانات
+            </h3>
+            <div className="bg-slate-50 border border-slate-200 p-5 rounded-sm">
+              <DetailsSelect
+                label="حالة الطلب"
+                value={draft.status}
+                options={["مراجعة", "مكتمل"]}
+                onChange={(value) => set({ status: value })}
               />
             </div>
           </div>
