@@ -24,6 +24,10 @@ function App() {
       setFilter={data.setFilter}
       typeFilter={data.typeFilter}
       setTypeFilter={data.setTypeFilter}
+      statusFilter={data.statusFilter}
+      setStatusFilter={data.setStatusFilter}
+      areaFilter={data.areaFilter}
+      setAreaFilter={data.setAreaFilter}
       onUpdate={data.updateSubmission}
       onDelete={data.deleteSubmission}
       rows={data.rows}

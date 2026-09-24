@@ -7,13 +7,7 @@ export function DropdownMenu({ trigger, children }: DropdownProps) {
   return (
     <DropdownMenuPrimitive.Root dir="rtl">
       <DropdownMenuPrimitive.Trigger asChild>
-        <button
-          type="button"
-          className="flex h-10 items-center justify-between gap-2 rounded-sm border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-700 outline-none hover:bg-slate-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-bold w-full sm:w-auto shadow-2xs cursor-pointer"
-          aria-label="اختيار نوع المدرسة"
-        >
-          {trigger}
-        </button>
+        {trigger}
       </DropdownMenuPrimitive.Trigger>
       
       <DropdownMenuPrimitive.Portal>

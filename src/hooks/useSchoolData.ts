@@ -16,6 +16,8 @@ export function useSchoolData(_authenticated?: boolean) {
   const [submitted, setSubmitted] = useState(false);
   const [filter, setFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("الكل");
+  const [statusFilter, setStatusFilter] = useState("الكل");
+  const [areaFilter, setAreaFilter] = useState("الكل");
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -40,9 +42,11 @@ export function useSchoolData(_authenticated?: boolean) {
           (item.schoolName.includes(filter) ||
             item.principal.includes(filter) ||
             (item.schoolCode && item.schoolCode.includes(filter))) &&
-          (typeFilter === "الكل" || item.schoolType === typeFilter),
+          (typeFilter === "الكل" || item.schoolType === typeFilter) &&
+          (statusFilter === "الكل" || item.status === statusFilter) &&
+          (areaFilter === "الكل" || item.area === areaFilter),
       ),
-    [filter, submissions, typeFilter],
+    [filter, submissions, typeFilter, statusFilter, areaFilter],
   );
 
   const updateRow = (
@@ -225,6 +229,10 @@ export function useSchoolData(_authenticated?: boolean) {
     setFilter,
     typeFilter,
     setTypeFilter,
+    statusFilter,
+    setStatusFilter,
+    areaFilter,
+    setAreaFilter,
     filteredSubmissions,
     loading,
     loadError,

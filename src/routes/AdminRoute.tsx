@@ -13,6 +13,10 @@ type AdminRouteProps = {
   setFilter: (value: string) => void;
   typeFilter: string;
   setTypeFilter: (value: string) => void;
+  statusFilter: string;
+  setStatusFilter: (value: string) => void;
+  areaFilter: string;
+  setAreaFilter: (value: string) => void;
   onUpdate: (id: number, changes: Partial<Submission>) => void | Promise<void>;
   onDelete: (id: number) => void | Promise<void>;
   rows: StudentRow[];
@@ -40,6 +44,10 @@ export function AdminRoute({
   setFilter,
   typeFilter,
   setTypeFilter,
+  statusFilter,
+  setStatusFilter,
+  areaFilter,
+  setAreaFilter,
   onUpdate,
   onDelete,
   rows,
@@ -58,6 +66,10 @@ export function AdminRoute({
           setFilter={setFilter}
           typeFilter={typeFilter}
           setTypeFilter={setTypeFilter}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          areaFilter={areaFilter}
+          setAreaFilter={setAreaFilter}
           onUpdate={onUpdate}
           onDelete={onDelete}
           loading={loading}

@@ -15,6 +15,10 @@ type DashboardProps = {
   setFilter: (value: string) => void;
   typeFilter: string;
   setTypeFilter: (value: string) => void;
+  statusFilter: string;
+  setStatusFilter: (value: string) => void;
+  areaFilter: string;
+  setAreaFilter: (value: string) => void;
   onUpdate: (id: number, changes: Partial<Submission>) => void | Promise<void>;
   onDelete: (id: number) => void | Promise<void>;
   loading: boolean;
@@ -27,6 +31,10 @@ export function Dashboard({
   setFilter,
   typeFilter,
   setTypeFilter,
+  statusFilter,
+  setStatusFilter,
+  areaFilter,
+  setAreaFilter,
   onUpdate,
   onDelete,
   loading,
@@ -38,7 +46,7 @@ export function Dashboard({
   // Reset to page 1 whenever filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [filter, typeFilter, submissions.length]);
+  }, [filter, typeFilter, statusFilter, areaFilter, submissions.length]);
 
   const totalPages = Math.max(1, Math.ceil(submissions.length / PAGE_SIZE));
   const pagedSubmissions = submissions.slice(
@@ -119,6 +127,10 @@ export function Dashboard({
           setFilter={setFilter}
           typeFilter={typeFilter}
           setTypeFilter={setTypeFilter}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          areaFilter={areaFilter}
+          setAreaFilter={setAreaFilter}
         />
         
         <SubmissionsTable submissions={pagedSubmissions} onOpen={(item) => setSelectedSchool(item)} />

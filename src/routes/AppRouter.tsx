@@ -21,6 +21,10 @@ type AppRouterProps = {
   setFilter: (value: string) => void;
   typeFilter: string;
   setTypeFilter: (value: string) => void;
+  statusFilter: string;
+  setStatusFilter: (value: string) => void;
+  areaFilter: string;
+  setAreaFilter: (value: string) => void;
   onUpdate: (id: number, changes: Partial<Submission>) => void | Promise<void>;
   onDelete: (id: number) => void | Promise<void>;
   rows: StudentRow[];
@@ -112,6 +116,10 @@ function DashboardEntry(props: AppRouterProps) {
       setFilter={props.setFilter}
       typeFilter={props.typeFilter}
       setTypeFilter={props.setTypeFilter}
+      statusFilter={props.statusFilter}
+      setStatusFilter={props.setStatusFilter}
+      areaFilter={props.areaFilter}
+      setAreaFilter={props.setAreaFilter}
       onUpdate={props.onUpdate}
       onDelete={props.onDelete}
       rows={props.rows}
