@@ -68,39 +68,5 @@ export const initialRows: StudentRow[] = [
   ]),
 ];
 
-export const sampleSubmissions: Submission[] = [
-  {
-    id: 1,
-    schoolName: "التحرير الرسمية لغات",
-    schoolType: "إعدادي",
-    area: "حضر",
-    shift: "صباحية",
-    principal: "أحمد محمد علي",
-    students: 486,
-    classes: 14,
-    status: "مكتمل",
-  },
-  {
-    id: 2,
-    schoolName: "ابو صير بنا ع بنات",
-    schoolType: "تعليم أساسي",
-    area: "ريف",
-    shift: "ممتدة",
-    principal: "منى السيد",
-    students: 732,
-    classes: 21,
-    status: "مكتمل",
-  },
-  {
-    id: 3,
-    schoolName: "سمنود الرسمية لغات",
-    schoolType: "متعدد المراحل",
-    area: "حضر",
-    shift: "يوم كامل",
-    principal: "خالد حسن",
-    students: 958,
-    classes: 28,
-    status: "مراجعة",
-  },
-];
+export const sampleSubmissions: Submission[] = [];
 
