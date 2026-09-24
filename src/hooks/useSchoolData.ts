@@ -70,7 +70,6 @@ export function useSchoolData(_authenticated?: boolean) {
   const submitForm = async (
     values: SchoolFormValues,
   ): Promise<{ ok: boolean; message?: string }> => {
-    // 1. Check for duplicate school name or code
     const normName = values.schoolName.trim().toLowerCase();
     const normCode = values.schoolCode ? values.schoolCode.trim().toLowerCase() : "";
 
@@ -213,7 +212,7 @@ export function useSchoolData(_authenticated?: boolean) {
       return;
 
     setSubmissions((current) =>
-      current.map((item) => (item.id === id ? { ...item, ...changes } : item)),
+      current.map((item) => (item.id === id ? { ...item, ...changes } : item))
     );
   };
 

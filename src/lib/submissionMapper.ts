@@ -17,7 +17,6 @@ export function toSubmission(record: Record<string, unknown>): Submission {
     if (!seenLevels.has(level)) {
       seenLevels.add(level);
       const rawVal = Number((row as { classes?: string }).classes || 0);
-      // Protect against data entry errors (e.g. entering student count like 120 in the classes field)
       const sanitized = rawVal > 40 ? Math.max(1, Math.round(rawVal / 35)) : rawVal;
       return sum + sanitized;
     }
