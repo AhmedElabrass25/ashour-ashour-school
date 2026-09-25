@@ -1,15 +1,23 @@
 const TOTAL_SCHOOLS = 48;
 
-type ProgressCardProps = { registered: number; remaining: number; progressPct: number };
+type ProgressCardProps = {
+  registered: number;
+  remaining: number;
+  progressPct: number;
+  onOpenUnregistered?: () => void;
+};
 
-export function ProgressCard({ registered, remaining, progressPct }: ProgressCardProps) {
+export function ProgressCard({ registered, remaining, progressPct, onOpenUnregistered }: ProgressCardProps) {
   return (
     <div className="col-span-2 lg:col-span-1 bg-white border border-slate-200 rounded-sm p-5 flex flex-col gap-3 relative shadow-sm border-t-4 border-t-amber-500 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <span className="w-11 h-11 flex items-center justify-center rounded-sm text-emerald-700 bg-emerald-50 text-2xl font-bold">▦</span>
-        <span className={`flex items-center gap-1 text-xs md:text-sm font-bold px-2.5 py-1 rounded-sm border ${remaining === 0 ? "text-emerald-700 bg-emerald-100/70 border-emerald-200" : "text-amber-700 bg-amber-100/70 border-amber-200"}`}>
-          {remaining === 0 ? "✓ مكتمل" : `فضل ${remaining}`}
-        </span>
+        <button
+          onClick={onOpenUnregistered}
+          className={`flex items-center gap-1 text-xs md:text-sm font-bold px-2.5 py-1 rounded-sm border transition-colors cursor-pointer ${remaining === 0 ? "text-emerald-700 bg-emerald-100/70 border-emerald-200" : "text-amber-700 bg-amber-100/70 border-amber-200 hover:bg-amber-200"}`}
+        >
+          {remaining === 0 ? "✓ مكتمل" : `فضل ${remaining} (عرض)`}
+        </button>
       </div>
       <div>
         <span className="block text-sm font-bold text-slate-600 mb-1">المدارس المسجّلة</span>
@@ -21,7 +29,17 @@ export function ProgressCard({ registered, remaining, progressPct }: ProgressCar
       <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden mt-1">
         <div className={`h-2 rounded-full transition-all duration-500 ${progressPct === 100 ? "bg-emerald-500" : "bg-amber-500"}`} style={{ width: `${progressPct}%` }} />
       </div>
-      <span className="text-xs text-slate-400 font-semibold">{progressPct}٪ من الهدف</span>
+      <div className="flex justify-between items-center text-xs">
+        <span className="text-slate-400 font-semibold">{progressPct}٪ من الهدف</span>
+        {remaining > 0 && (
+          <button
+            onClick={onOpenUnregistered}
+            className="text-amber-700 font-bold hover:underline cursor-pointer"
+          >
+            عرض القائمة 🔍
+          </button>
+        )}
+      </div>
     </div>
   );
 }
